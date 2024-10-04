@@ -37,7 +37,7 @@ describe("Feature: Organize Conference", () => {
         title: "My first conference",
         seats: 100,
         startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        endDate: endDate.toISOString()
       });
 
     expect(result.status).toBe(201);
@@ -56,8 +56,8 @@ describe("Feature: Organize Conference", () => {
       organizerId: e2eUsers.johnDoe.entity.props.id,
       title: "My first conference",
       seats: 100,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startDate,
+      endDate
     });
   });
 });

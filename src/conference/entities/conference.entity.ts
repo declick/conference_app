@@ -27,4 +27,5 @@ export class Conference extends Entity<ConferenceProps> {
     isTooLong() : boolean {
         return differenceInHours(this.props.endDate, this.props.startDate) > 3
     }
+    
 }

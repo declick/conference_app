@@ -44,7 +44,7 @@ container.register({
   ),
 
 
-  changeSeats: asValue(new ChangeSeats(conferenceRepository)),
+  changeSeats: asValue(new ChangeSeats(conferenceRepository,bookingRepository)),
   changeDates: asValue(
     new ChangeDates(
       conferenceRepository,
