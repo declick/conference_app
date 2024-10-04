@@ -9,6 +9,7 @@ import {
 } from "../dto/conference.dto";
 import { ValidatorRequest } from "../utils/validate-request";
 import { ChangeDates } from "../../../conference/usecases/change-dates";
+import { ReserveSeat } from "../../../conference/usecases/reserve-seat";
 
 
 export const organizeConference = (container: AwilixContainer) => {
@@ -95,6 +96,28 @@ export const changeDates = (container: AwilixContainer) => {
       return res.jsonSuccess(result, 200);
     } catch (error) {
       next(error);
+    }
+  };
+};
+
+export const reserveSeat = (container: AwilixContainer) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params; 
+      const { userId } = req.body; 
+
+
+      const reserveSeatUseCase = container.resolve('reserveSeat');
+      
+      await reserveSeatUseCase.execute({
+        user: req.user, 
+        conferenceId: id,
+        userId: userId, 
+      });
+
+      return res.jsonSuccess({ message: 'Seat reserved successfully' }, 200);
+    } catch (error) {
+      next(error); 
     }
   };
 };
