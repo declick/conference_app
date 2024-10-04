@@ -1,3 +1,5 @@
+
+
 export abstract class Entity<P> {
     public initialState: P
     public props: P

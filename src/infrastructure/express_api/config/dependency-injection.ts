@@ -11,7 +11,6 @@ import { MongoUser } from "../../../user/adapters/mongo/mongo-user";
 import { MongoUserRepository } from "../../../user/adapters/mongo/mongo-user-repository";
 import { IUserRepository } from "../../../user/ports/user-repository.interface";
 import { BasicAuthenticator } from "../../../user/services/basic-authenticator";
-import { Booking } from "../../../conference/entities/booking.entity";
 import { InMemoryMailer } from "../../../core/adapters/in-memory-mailer";
 import { InMemoryBookingRepository } from "../../../conference/adapters/in-memory-booking-repository";
 import { IBookingRepository } from "../../../conference/ports/booking-repository.interface";
@@ -31,16 +30,12 @@ container.register({
 });
 
 
-const conferenceRepository = container.resolve(
-  "conferenceRepository"
-) as IConferenceRepository;
+const conferenceRepository = container.resolve("conferenceRepository") as IConferenceRepository;
 const idGenerator = container.resolve("idGenerator") as IIDGenerator;
 const dateGenerator = container.resolve("dateGenerator") as IDateGenerator;
 const userRepository = container.resolve("userRepository") as IUserRepository;
 const mailer = container.resolve("mailer");
-const bookingRepository = container.resolve(
-  "bookingRepository"
-) as IBookingRepository;
+const bookingRepository = container.resolve("bookingRepository") as IBookingRepository;
 
 
 container.register({

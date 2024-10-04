@@ -24,7 +24,9 @@ describe("Feature: Change Dates", () => {
       e2eBooking.bobBooking,
       e2eConference.conference1,
     ]);
+
     app = testApp.expressApp;
+    
   });
 
 
@@ -59,7 +61,7 @@ describe("Feature: Change Dates", () => {
     });
   });
 
-  
+
   describe("Scenario: User is not authorized", () => {
     it("should return 403 Unauthorized", async () => {
       const startDate = addDays(new Date(), 8);

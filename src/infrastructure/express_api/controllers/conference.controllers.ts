@@ -9,7 +9,6 @@ import {
 } from "../dto/conference.dto";
 import { ValidatorRequest } from "../utils/validate-request";
 import { ChangeDates } from "../../../conference/usecases/change-dates";
-import { OrganizeConference } from "../../../conference/usecases/organize-conference";
 
 
 export const organizeConference = (container: AwilixContainer) => {
