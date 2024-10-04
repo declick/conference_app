@@ -10,6 +10,7 @@ describe('Feature: Organize Conference', () => {
     let testApp: TestApp
     let app: Application
 
+    
     beforeEach(async () => {
         testApp = new TestApp()
         await testApp.setup()
@@ -17,9 +18,11 @@ describe('Feature: Organize Conference', () => {
         app = testApp.expressApp
     })
 
+
     afterAll(async () => {
         await testApp.tearDown()
     })
+
 
     it('should organize a conference', async() => {
         const startDate = addDays(new Date(), 4)
@@ -47,8 +50,8 @@ describe('Feature: Organize Conference', () => {
             organizerId: e2eUsers.johnDoe.entity.props.id,
             title: 'My first conference',
             seats: 100,
-            startDate,
-            endDate,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
         })
     })
 })

@@ -1,12 +1,14 @@
+import { addDays, addHours } from "date-fns";
 import { Application } from "express";
 import request from "supertest";
 import { IConferenceRepository } from "../conference/ports/conference-repository.interface";
 import container from "../infrastructure/express_api/config/dependency-injection";
+import { e2eBooking } from "./seeds/booking-seeds";
 import { e2eConference } from "./seeds/conference-seeds";
 import { e2eUsers } from "./seeds/user-seeds";
 import { TestApp } from "./utils/test-app";
 
-describe("Feature: Change the number of seats", () => {
+describe("Feature: Change Dates", () => {
   let testApp: TestApp;
   let app: Application;
 
@@ -16,6 +18,10 @@ describe("Feature: Change the number of seats", () => {
     await testApp.setup();
     await testApp.loadAllFixtures([
       e2eUsers.johnDoe,
+      e2eUsers.bob,
+      e2eUsers.alice,
+      e2eBooking.aliceBooking,
+      e2eBooking.bobBooking,
       e2eConference.conference1,
     ]);
     app = testApp.expressApp;
@@ -28,14 +34,15 @@ describe("Feature: Change the number of seats", () => {
 
 
   describe("Scenario: Happy path", () => {
-    it("should change the number of seats", async () => {
-      const seats = 100;
-      const id = "id-1";
+    it("should change the dates", async () => {
+      const startDate = addDays(new Date(), 8);
+      const endDate = addDays(addHours(new Date(), 2), 8);
+      const id = e2eConference.conference1.entity.props.id;
 
       const result = await request(app)
-        .patch(`/conference/seats/${id}`)
+        .patch(`/conference/dates/${id}`)
         .set("Authorization", e2eUsers.johnDoe.createAuthorizationToken())
-        .send({ seats });
+        .send({ startDate, endDate });
 
       expect(result.status).toBe(200);
 
@@ -45,19 +52,23 @@ describe("Feature: Change the number of seats", () => {
       const fetchedConference = await conferenceRepository.findById(id);
 
       expect(fetchedConference).toBeDefined();
-      expect(fetchedConference?.props.seats).toEqual(seats);
+      expect(fetchedConference!.props.startDate).toEqual(
+        startDate.toISOString()
+      );
+      expect(fetchedConference!.props.endDate).toEqual(endDate.toISOString());
     });
   });
 
   
   describe("Scenario: User is not authorized", () => {
     it("should return 403 Unauthorized", async () => {
-      const seats = 100;
-      const id = "id-1";
+      const startDate = addDays(new Date(), 8);
+      const endDate = addDays(addHours(new Date(), 2), 8);
+      const id = e2eConference.conference1.entity.props.id;
 
       const result = await request(app)
-        .patch(`/conference/seats/${id}`)
-        .send({ seats });
+        .patch(`/conference/dates/${id}`)
+        .send({ startDate, endDate });
 
       expect(result.status).toBe(403);
     });
