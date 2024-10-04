@@ -1,3 +1,4 @@
+import { DomainException } from "../../core/exceptions/domain-exception";
 import { Executable } from "../../core/executable.interface";
 import { IDateGenerator } from "../../core/ports/date-generator.interface";
 import { IIDGenerator } from "../../core/ports/id-generator.interface";
@@ -41,20 +42,22 @@ export class OrganizeConference
       seats,
     });
 
+    // Erreurs du Domaine
+
     if (newConference.isTooClose(this.dateGenerator.now())) {
-      throw new Error("The conference must happen in at least 3 days");
+      throw new DomainException("The conference must happen in at least 3 days");
     }
 
     if (newConference.hasTooManySeats()) {
-      throw new Error("The conference must have a maximum of 1000 seats");
+      throw new DomainException("The conference must have a maximum of 1000 seats");
     }
 
     if (newConference.hasNotEnoughSeats()) {
-      throw new Error("The conference must have at least 20 seats");
+      throw new DomainException("The conference must have at least 20 seats");
     }
 
     if (newConference.isTooLong()) {
-      throw new Error("The conference is too long (> 3 hours)");
+      throw new DomainException("The conference is too long (> 3 hours)");
     }
 
     await this.repository.create(newConference);

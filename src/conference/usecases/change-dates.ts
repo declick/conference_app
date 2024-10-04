@@ -4,6 +4,8 @@ import { IMailer } from "../../core/ports/mailer.interface";
 import { User } from "../../user/entities/user.entity";
 import { IUserRepository } from "../../user/ports/user-repository.interface";
 import { Conference } from "../entities/conference.entity";
+import { ConferenceNotFoundException } from "../exceptions/conference-not-found";
+import { ConferenceUpdateForbiddenException } from "../exceptions/conference-update-forbidden";
 import { IBookingRepository } from "../ports/booking-repository.interface";
 import { IConferenceRepository } from "../ports/conference-repository.interface";
 
@@ -39,10 +41,10 @@ export class ChangeDates
   }: RequestChangeDates) {
     const conference = await this.repository.findById(conferenceId);
 
-    if (!conference) throw new Error("Conference not found");
+    if (!conference) throw new ConferenceNotFoundException();
 
     if (conference.props.organizerId !== user.props.id)
-      throw new Error("You are not allowed to update this conference");
+      throw new ConferenceUpdateForbiddenException();
 
     conference.update({
       startDate,
